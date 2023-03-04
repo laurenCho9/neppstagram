@@ -1,8 +1,22 @@
-import { Outlet } from "react-router-dom";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { Navigate, Outlet } from "react-router-dom";
 import styled from "styled-components";
+import { getCurrentUser } from "../../api/auth";
+import { fetchUser } from "../../redux/user";
 import Header from "./Header";
 
 function MainSection() {
+  const token = localStorage.getItem("token");
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    getCurrentUser().then((data) => {
+      dispatch(fetchUser(data));
+    });
+  }, [dispatch]);
+  if (!token) return <Navigate to="/auth/login" />;
+
   return (
     <Container>
       <Header />
@@ -16,9 +30,11 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   background-color: #a3a3a3;
+  min-height: 100vh;
 `;
 
 const OutletWrapper = styled.div`
+  display: flex;
   max-width: 900px;
   background-color: #fff;
   margin: 0 auto;

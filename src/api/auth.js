@@ -25,8 +25,8 @@ export const login = async (form) => {
     const { data } = await authAxios.post("/signin", form);
 
     //로그인 성공시 헤더에 토큰값 저장.
-    // authAxios.defaults.headers.common.Authorization = `Bearer ${data.token}`;
-    // localStorage.setItem("token", data.token);
+    authAxios.defaults.headers.common.Authorization = `Bearer ${data.token}`;
+    localStorage.setItem("token", data.token);
 
     return data;
   } catch (e) {
@@ -38,5 +38,22 @@ export const getCurrentUser = async () => {
   try {
     const { data } = await authAxios.get("/current");
     console.log(data);
+    return data;
   } catch (e) {}
+};
+
+export const patchProfile = async (file) => {
+  try {
+    //파일 서버에 보내기 위해서 FormData 를 이용.
+    const form = new FormData();
+    //FormData.프로토타입.append("키", "값");
+    form.append("profile", file);
+
+    const { data } = await authAxios.patch("/profile", form);
+
+    return data;
+    // axios.patch("/profile");
+  } catch (e) {
+    console.log(e);
+  }
 };
