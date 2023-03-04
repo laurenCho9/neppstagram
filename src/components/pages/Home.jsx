@@ -23,8 +23,8 @@ function Home() {
     <div>
       <ul>
         {data.map((item) => (
-          <li>
-            <img src={item.img_list[0].url} alt="데이터이미지들" />
+          <li key={item.id}>
+            <img src={item.img_list[0].url} alt="" />
           </li>
         ))}
       </ul>
